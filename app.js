@@ -36,7 +36,7 @@ app.get("/api/users", async (req, res, next) => {
   }
 });
 
-// error handling
+// error handling /
 app.use((err, req, res, next) => {
   console.log(err);
   res.status(err.status || 500).send({ error: err.message });

@@ -28,14 +28,9 @@ app.get("/api/auth", async (req, res, next) => {
   }
 });
 
-app.get("/api/users/:id/notes", async (req, res, next) => {
+app.get("/api/users", async (req, res, next) => {
   try {
-    console.log('req.headers', req.headers)
-    res.send(await User.findByPk(req.params.id, {
-include: {
-  model: Note
-}
-    }));
+    res.send(await User.byToken(req.headers.authorization));
   } catch (ex) {
     next(ex);
   }

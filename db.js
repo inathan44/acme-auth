@@ -33,11 +33,13 @@ User.beforeCreate(async (user) => {
 
 User.byToken = async (token) => {
   try {
-    // const user = await User.findByPk(token);
-
     const payload = jwt.verify(token, process.env.JWT);
 
-    const user = await User.findByPk(payload.id);
+    const user = await User.findByPk(payload.id, {
+      include: {
+        model: Note,
+      },
+    });
 
     if (user) {
       return user;
@@ -78,14 +80,13 @@ const syncAndSeed = async () => {
   );
 
   const notes = [
-    {text: 'note 1', userId: lucy.id},
-    {text: 'note 2', userId: moe.id},
-    {text: 'note 3', userId: larry.id},
+    { text: "note 1", userId: lucy.id },
+    { text: "note 2", userId: moe.id },
+    { text: "note 3", userId: larry.id },
   ];
   const [note1, note2, note3] = await Promise.all(
     notes.map((note) => Note.create(note))
   );
-
 
   return {
     users: {
